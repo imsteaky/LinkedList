@@ -1,9 +1,9 @@
 var websiteTitleInput = document.querySelector(".website-title-field");
 var websiteUrlInput = document.querySelector(".website-url-field");
 var enterButton = document.querySelector(".enter-button");
-var generatedField = document.querySelector(".card-container");
+var cardContainer = document.querySelector(".card-container");
 var counter = 0;
-var inputForm = document.querySelector(".form-fields")
+var inputForm = document.querySelector(".form-fields");
 
 websiteTitleInput.addEventListener("keyup", enterButton);
 websiteUrlInput.addEventListener("keyup", enterButton);
@@ -13,9 +13,13 @@ enterButton.addEventListener("click", createField);
 
 function createField() {
   event.preventDefault();
-  siteName = websiteTitleInput.value;
-  siteUrl = websiteUrlInput.value;
-  generatedField.innerHTML += `
+  // console.log(this.parentNode)
+  var siteName = websiteTitleInput.value;
+  var siteUrl = websiteUrlInput.value;
+  var card = document.createElement("div");
+  
+  
+  card.innerHTML = `
       <article class="card">
           <h2>${siteName}</h2>
           <hr>
@@ -26,26 +30,28 @@ function createField() {
           <button class="read-button">Read</button>
           <button class="delete-button">Delete</button>
         </article>`;
-  // var deleteButton = document.querySelector(".delete-button");
-  // deleteButton.addEventListener("click", reset);
+        
+  cardContainer.append(card);
   inputForm.reset();
   handleEnterButton();
   newDeleteFunction();
 }
 
 function newDeleteFunction() {
-  var deleteButton = document.querySelectorAll(".delete-button");
-  console.log(deleteButton.length)
-  deleteButton[deleteButton.length - 1].addEventListener("click", deleteLinkButton);
+  var deleteButtons = document.querySelectorAll(".delete-button"); 
+  var buttonIndex = deleteButtons.length-1;
+  deleteButtons[buttonIndex].addEventListener("click", deleteLinkButton);
 }
-//figure out how to select each card
+//figure out how to select each card using parent nodes 
 
 function deleteLinkButton() {
-  // generatedField.innerHTML = "";
+  // cardContainer.innerHTML = "";
   // clearInputFields();
   // counter--;
-  console.log(this.parentNode)
-  this.parentNode.parentNode.removeChild();
+  // console.log(this);
+  cardContainer.removeChild(this.parentNode.parentNode);
+  // I want to remove this child, but since I cant find that child I want to find it through clicking this, and this is a button, and the parent of that (the card) and the parent of that (the div cardContainer)
+  // console.log(this.parentNode.parentNode)
 
 }
 
@@ -84,21 +90,13 @@ function clearAllLinks() {
   (document.querySelector(".number-of-read").innerText = 0), (readCounter = 0);
 }
 
-//pseudo code. doesn't actually do anything yet. This code will display an error if the user doesn't fill in the fields properly.
-
-// function noTextEntered(event){
+// function noTextEntered(){
 //   event.preventDefault();
-//   if(titlefield.value == "" && urlField.value == ""){
-//     alert("please fill in all the fields");
+//   if(websiteTitleInput.value !== ""){
+//     return enterButton.disabled = false;
 //   }
-//   else if (titleField.value == ""){
-//     alert("fill in the title field");
-//   }
-//   else if (urlField.value == "");
-//     alert("fill in the url field");
-// } else {
-//   createCard();
 // }
+
 
 /* indicate a time stamp*/
 /* Date.now , set this somewhere on our template literal with vanilla or jquery*/
